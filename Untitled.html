@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    
+<h2 style="text-align: center;color:blueviolet">T E S T</h2>    
+ 
+<div style="margin-bottom: 10;height: 750px" id="glavni"></div>
+<div style="" id="meni">  
+    
+ Page &nbsp; <span value="0" class="cena"> 0</span><br><br>   
+</div>
+   
+<script>
+ 
+var glavni = document.getElementById("glavni");   
+var meni = document.getElementById("meni");
+/*
+var podaci = JSON.parse($.getJSON({"url": "index.php", "async": false}).responseText); 
+*/
+var podaci = JSON.parse($.getJSON({"url": "daki.json", "async": false}).responseText); 
+ console.log(podaci);   
+var poStrani = 8;
+var ukupnoKomada = podaci.length;  //50
+var ukupnoStrana = Math.ceil(ukupnoKomada / poStrani);
+var html ="";
+  
+for(var u=0;u<ukupnoStrana;u++){
+    meni.innerHTML+="<button>"+(u+1)+"</button>"
+} 
+
+function text(i){
+    return "<div style='border:1px solid red;padding:5px;margin:px;text-align: center'>Id = "+podaci[i]['actor_id']+"<br>Ime : "+podaci[i]['first_name']+"<br>Prezime : "+podaci[i]['last_name']+"</div><br>";
+}
+
+function show(start,end){
+    if(html.length != 0){
+        html = "";
+    }
+    for(var i=start; i<end;i++){
+        html += text(i);    
+    }
+    glavni.innerHTML=html;
+}
+show(0,poStrani);
+
+
+/// ovo radi kada kliknemo
+$("button").click(function(){
+    broj = $(this).text();
+    $("span").first().text(broj);    
+    strana = broj-1;  
+    pageIndex = strana * poStrani; 
+    max = pageIndex + poStrani;
+    if(max > ukupnoKomada){
+        max = ukupnoKomada;
+    }
+    show (pageIndex,max); 
+});
+    
+</script>
+</body>
+</html>
